@@ -1,0 +1,1 @@
+{"name":"drvn-pickleball","private":true,"type":"module","scripts":{"test":"node --test tests/*.test.mjs","check":"node --check public/system.js && node --check public/admin.js && node --check public/shared.js","dev":"python -m http.server 4173 --directory public"},"engines":{"node":">=22"}}

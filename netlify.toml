@@ -1,0 +1,19 @@
+[build]
+publish = "public"
+[build.environment]
+NODE_VERSION = "22"
+[[redirects]]
+from = "/admin/login"
+to = "/admin/login.html"
+status = 200
+[[redirects]]
+from = "/admin"
+to = "/admin/index.html"
+status = 200
+[[headers]]
+for = "/*"
+[headers.values]
+X-Content-Type-Options = "nosniff"
+Referrer-Policy = "no-referrer"
+X-Frame-Options = "DENY"
+Content-Security-Policy = "default-src 'self'; img-src 'self' data: blob: https://nrxlfjtzdwkdvwbmrphx.supabase.co; connect-src 'self' https://nrxlfjtzdwkdvwbmrphx.supabase.co; style-src 'self' 'unsafe-inline'; script-src 'self'; base-uri 'self'; frame-ancestors 'none'; form-action 'self'"
