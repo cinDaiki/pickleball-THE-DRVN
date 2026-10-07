@@ -20,5 +20,17 @@ perform drvn_review(p,a,'correction_requested','Wrong reference');
 perform drvn_cancel_event(a,t,'Test cancellation');
 if exists(select 1 from drvn_registrations where category_id=c and status<>'cancelled') then raise exception 'FAIL cancellation';end if;
 if not exists(select 1 from drvn_email_queue where registration_id=r.id) then raise exception 'FAIL email queue';end if;
+-- A late payer must not displace a newer reservation.
+t=drvn_save_event(a,jsonb_build_object('title','TEST LATE','starts_at',now()+interval '5 days','opens_at',now()-interval '1 day','closes_at',now()+interval '4 days','status','published'),jsonb_build_array(jsonb_build_object('name','Late test','unit','individual','fee_cents',10000,'capacity',1)));
+select id into c2 from drvn_categories where tournament_id=t;
+r=drvn_register(c2,'Late payer','late@example.invalid','',repeat('d',64),gen_random_uuid(),false);
+update drvn_registrations set expires_at=now()-interval '1 hour' where id=r.id;
+r2=drvn_register(c2,'New player','new@example.invalid','',repeat('e',64),gen_random_uuid(),false);
+p=drvn_submit_payment(r.id,'9999999999999',10000,now(),'Tester','late.jpg');
+begin perform drvn_review(p,a,'verified','Matched');raise exception 'FAIL late overbooking';exception when others then if sqlerrm not like 'No slot available%' then raise;end if;end;
+perform drvn_entry_action(a,r2.id,'cancel','Test cancellation');
+perform drvn_review(p,a,'verified','Slot now available');
+if has_table_privilege('anon','public.drvn_registrations','SELECT') or has_table_privilege('authenticated','public.drvn_payments','SELECT') then raise exception 'FAIL private table access';end if;
+if has_function_privilege('anon','public.drvn_review(uuid,uuid,text,text)','EXECUTE') then raise exception 'FAIL public review access';end if;
 end $$;
 rollback;
