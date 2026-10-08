@@ -1,7 +1,7 @@
 // Initial development configuration. Credentials only live in function secrets.
 export function emailConfig(env) {
   const provider = env('EMAIL_PROVIDER') || 'gmail';
-  const user = env('GMAIL_USER') || 'xddaiki@gmail.com';
+  const user = env('GMAIL_USER') || 'xdqwerts@gmail.com';
   const mode = env('EMAIL_MODE') || 'test';
   return {
     provider, user, mode,

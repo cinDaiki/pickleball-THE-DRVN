@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {emailConfig,checkRecipient} from '../supabase/functions/drvn-api/email.mjs';
 const env = values => key => values[key] || '';
 test('initial sender is recorded but missing credentials do not enable delivery', () => {
- const c=emailConfig(env({}));assert.equal(c.user,'xddaiki@gmail.com');assert.equal(c.configured,false);assert.throws(()=>checkRecipient(c,c.user),/credentials/);
+ const c=emailConfig(env({}));assert.equal(c.user,'xdqwerts@gmail.com');assert.equal(c.configured,false);assert.throws(()=>checkRecipient(c,c.user),/credentials/);
 });
 test('test mode only permits explicitly configured inboxes',()=>{
  const c=emailConfig(env({GMAIL_APP_PASSWORD:'test-fixture',EMAIL_TEST_RECIPIENTS:'one@example.invalid,two@example.invalid'}));
