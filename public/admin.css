@@ -4,3 +4,53 @@ body[data-page=admin],body[data-page=login]{font-family:Inter,system-ui,sans-ser
 body[data-page=admin]{--sans:Inter,system-ui,sans-serif}.admin-main{width:calc(100% - 238px);min-width:0}.admin-main> :not(dialog){max-width:1400px;margin-left:auto;margin-right:auto}.admin-main h1{white-space:normal}.admin-main label{font-family:inherit;margin-bottom:0}.admin-main input,.admin-main select{margin-top:0;min-width:0}.admin-main .field-row{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}.admin-main .field-row>*{min-width:0}.admin-main .stats{grid-template-columns:repeat(4,minmax(0,1fr));align-items:stretch}.admin-main .stat{min-width:0;min-height:144px}.admin-main .stat strong{overflow-wrap:anywhere;font-variant-numeric:tabular-nums}.dashboard-grid{grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch}.dashboard-grid>.panel{margin-bottom:0;min-width:0}.dashboard-grid{margin-bottom:24px}.panel,.tournament-card,.records-panel,#content,.review-details,.proof-panel{min-width:0}.admin-main #event-form,.admin-main #settings{max-width:1000px;margin-inline:auto}.admin-main .table-scroll{max-width:100%;overscroll-behavior-x:contain}.admin-main .table-scroll table{min-width:680px;table-layout:auto}.admin-main .table-scroll td{overflow-wrap:anywhere;max-width:340px}.admin-main .tournament-card{display:flex;flex-direction:column}.admin-main .tournament-card>img,.admin-main .cover-placeholder{height:auto;aspect-ratio:16/9}.tournament-card-body{display:flex;flex-direction:column;flex:1}.tournament-card-body>.actions{margin-top:auto;padding-top:16px}.admin-main .gallery-grid{grid-template-columns:repeat(3,minmax(0,1fr));align-items:start}.admin-main .gallery-grid img{height:auto;aspect-ratio:4/3;object-fit:cover}.admin-main .event-cover{max-height:360px;aspect-ratio:16/9;object-fit:cover}.admin-main .check input,.admin-main .decision-options input{flex:0 0 auto;min-width:16px;min-height:16px;margin:2px 0 0}.admin-main .filter-bar{align-items:center}.admin-main .filter-bar label{margin:0}.admin-main .form-section{line-height:1.4}.admin-main .system-head{margin-bottom:8px;align-items:center}.admin-main dialog{max-height:88dvh}.admin-main .dialog-head{position:sticky;top:-26px;background:#fff;z-index:3;padding-block:8px}.admin-main .review-layout{align-items:start}.admin-main .proof-panel .receipt{width:100%;object-fit:contain}.login-panel label{font-family:Inter,system-ui,sans-serif;margin-bottom:0}.login-panel h1{white-space:normal}@media(max-width:1100px){.admin-main{width:calc(100% - 200px)}.admin-main .stats{grid-template-columns:repeat(2,minmax(0,1fr))}.dashboard-grid{grid-template-columns:1fr}}@media(max-width:760px){.admin-main{width:100%}.admin-main .field-row{grid-template-columns:1fr}.admin-main .stat{min-height:126px}.admin-main .gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-main .filter-bar>*{max-width:100%}.admin-main .filter-bar .button{flex:1}.admin-main .pagination{align-items:flex-start;flex-direction:column}.admin-main .panel{padding:20px}.admin-main .records-panel{padding:0}.admin-main .dialog-head{top:-18px}.admin-main .system-head{flex-wrap:wrap}}
 /* Tournament workspace uses the existing content grid and panel geometry. */
 .workspace-heading{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:20px}.workspace-tabs{display:flex;gap:8px;overflow-x:auto;padding:4px 3px 14px;margin-bottom:8px;max-width:100%}.workspace-tabs .button{flex:0 0 auto}.admin-main .workspace-tabs .button[aria-pressed=true]{background:#244d35;color:#fff;border-color:#244d35}.workspace-section-title{padding:22px 26px 6px}.workspace-section-title p{font-size:12px;color:#76826e}#tournament-content{min-width:0}.workspace-heading .actions{align-items:center}.workspace-heading .pill{align-self:center}@media(max-width:760px){.workspace-section-title{padding:20px 20px 6px}}
+/* Phone layouts: readable records and navigation without a wider page. */
+.admin-menu-toggle{display:none}.admin-main .page-heading>div{min-width:0}.admin-main h1,.admin-main h2,.admin-main h3,.tournament-card-body p{overflow-wrap:anywhere}
+@media(max-width:760px){
+ .admin-sidebar{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px 12px}
+ .admin-sidebar .admin-menu-toggle{display:inline-flex;min-height:44px;padding:10px 16px;background:#d6eaa7;color:#163724;border:0;font:600 13px Inter,system-ui,sans-serif}
+ .admin-sidebar .sidebar-label{grid-column:1/-1;margin:0;font-size:9px}
+ .admin-sidebar #tabs{display:none;grid-column:1/-1;grid-template-columns:repeat(2,minmax(0,1fr));overflow:visible;padding-top:8px}
+ .admin-sidebar.nav-open #tabs{display:grid}
+ .admin-sidebar #tabs button{min-width:0;min-height:44px;white-space:normal;font-size:12px}
+ .admin-main .workspace-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:4px 0 14px;overflow:visible}
+ .admin-main .workspace-tabs .button{min-width:0;white-space:normal;padding:10px 8px}
+ .admin-main .button{min-height:44px;white-space:normal;overflow-wrap:anywhere;font-size:12px;max-width:100%}
+ .admin-main input,.admin-main select,.admin-main textarea,.login-panel input{font-size:16px;max-width:100%;min-height:44px}
+ .admin-main .filter-bar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch}
+ .admin-main .filter-bar .search-field{grid-column:1/-1;min-width:0}
+ .admin-main .filter-bar>label{min-width:0}
+ .admin-main .filter-bar .button{width:100%}
+ .admin-main .filter-bar select{width:100%}
+ .admin-main .admin-topbar{height:auto;min-height:68px;gap:12px;flex-wrap:wrap;padding-block:12px}
+ .admin-main .admin-topbar .actions{margin:0;gap:10px}
+ .admin-main .stat{padding:14px;min-height:132px}
+ .admin-main .stat strong{font-size:clamp(21px,6vw,27px)}
+ .admin-main .stat small{font-size:10px;line-height:1.45;display:block}
+ .admin-main .stat>span:first-child{font-size:11px}
+ .admin-main .detail-list{grid-template-columns:minmax(0,1fr);gap:6px}
+ .admin-main .detail-list dd{margin-bottom:12px}
+ .admin-main .form-actions>.button{flex:1 1 140px}
+ .admin-main .dialog-head{gap:12px}
+ .admin-main .dialog-head .eyebrow{margin:0}
+ .admin-main .workspace-heading{gap:8px}
+ .admin-main .workspace-heading .actions{margin:4px 0;max-width:100%}
+}
+@media(max-width:760px){
+ .admin-main .table-scroll{overflow:visible}
+ .admin-main .table-scroll table{display:block;min-width:0;width:100%}
+ .admin-main .table-scroll thead{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+ .admin-main .table-scroll tbody{display:block}
+ .admin-main .table-scroll tr{display:block;padding:12px 18px;border-bottom:1px solid #dfe6d8}
+ .admin-main .table-scroll td{display:block;width:100%;max-width:none;border:0;padding:8px 0;font-size:13px}
+ .admin-main .table-scroll td::before{content:attr(data-label);display:block;font-size:10px;letter-spacing:.5px;text-transform:uppercase;font-weight:600;color:#708064;margin-bottom:5px}
+ .admin-main .table-scroll td small{font-size:12px;line-height:1.5}
+ .admin-main .table-scroll td .button{font-size:12px;min-height:44px;padding:10px 12px}
+ .admin-main .table-scroll td .actions{gap:8px}
+ .admin-main .table-scroll tr:hover td{background:transparent}
+ .admin-main .pagination>.actions{width:100%;display:grid;grid-template-columns:1fr 1fr}
+ .admin-main .pagination .button{width:100%}
+ .admin-main .pill{font-size:11px;white-space:normal}
+ .login-panel{width:100%;margin:3vh auto}
+}
+@media(max-width:380px){.admin-main .workspace-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}.admin-main .filter-bar{grid-template-columns:minmax(0,1fr)}.admin-main .admin-topbar .breadcrumb{width:100%}}

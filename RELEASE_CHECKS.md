@@ -48,3 +48,12 @@ This is a targeted functional/security review, not an exhaustive penetration tes
 - Netlify frontend deployment and visual desktop/mobile acceptance remain pending: the available cloud browser is signed out of Netlify. DOM tests do not prove pixel-level layout or responsive rendering.
 - Existing Auth advisor warning remains: leaked-password protection is disabled. Email sender credentials still require separate configuration; this change does not send test messages or enable delivery.
 - Live read-only security smoke: all 22 checks passed, including both new endpoints rejecting unauthenticated access. Summary RPC also succeeded under `service_role` (not only the SQL editor owner).
+
+## Mobile admin layout — 2026-10-10
+
+- Phone navigation uses a collapsible Menu and wrapping tournament section buttons.
+- At widths up to 760px, tables become labeled stacked records, filters fit their container, inputs use 16px text, and actions use at least 44px touch targets.
+- Long tournament names wrap; metric cards retain the two-column grid; desktop tables and geometry remain intact.
+- Frontend-only change. No database, registration, payment, category, or API changes.
+- Syntax checks and all 22 existing regression tests passed.
+- Netlify production deployment confirmed published at 15:05 Asia/Manila. Authenticated visual acceptance remains pending: secure sign-in was attempted but the site rejected the credentials.
