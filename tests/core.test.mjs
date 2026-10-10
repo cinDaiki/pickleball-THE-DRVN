@@ -25,3 +25,11 @@ test('paging validates identifiers and bounds',async()=>{
  assert.throws(()=>listOptions({event:'abc'}),/identifier/);
  assert.throws(()=>listOptions({query:'x'.repeat(151)}),/150/);
 });
+test('CSV protects formulas hidden behind leading spaces or BOM',()=>{
+ for(const value of [' =SUM(A1)','\ufeff+1+2','\t@SUM(A1)','\n-1'])assert.ok(csv([[value]]).startsWith('"\''));
+ assert.equal(csv([['Normal player name']]),'"Normal player name"');
+});
+test('rendered user text is escaped before HTML insertion',async()=>{
+ const {escape}=await import('../public/shared.js');
+ assert.equal(escape('<img src=x onerror="alert(1)">'), '&lt;img src=x onerror=&quot;alert(1)&quot;&gt;');
+});
