@@ -5,7 +5,7 @@ shared=(Path(__file__).resolve().parents[1]/'public/shared.js').read_text()
 base=re.search(r"SUPABASE='([^']+)'",shared)[1]
 key=re.search(r"PUBLIC_KEY='([^']+)'",shared)[1]
 api=base+'/functions/v1/drvn-api'
-actions=['workspace','dashboard','admin_list','save_event','cancel_event','entry_action','review','receipt','photo','settings','email_retry','send_emails','export']
+actions=['tournament_summary','tournament_report','workspace','dashboard','admin_list','save_event','cancel_event','entry_action','review','receipt','photo','settings','email_retry','send_emails','export']
 cases=[(a,api,{'action':a},{},[401]) for a in actions]
 cases += [('forged JWT',api,{'action':'workspace'},{'Authorization':'Bearer invalid-test-token'},[401]),('invalid private status',api,{'action':'status','token':'invalid'},{},[400]),('foreign origin',api,{'action':'events'},{'Origin':'https://unauthorized.example'},[400]),('direct registration read',base+'/rest/v1/drvn_registrations?select=id',None,{},[401,403]),('direct admin RPC',base+'/rest/v1/rpc/drvn_admin_summary',{'p_actor':'ee6e2514-a985-4fa6-b790-2ca3c11ed163'},{},[401,403]),('private receipt listing',base+'/storage/v1/object/list/drvn-receipts',{'prefix':'','limit':1},{},[200,400,401,403]),('public calendar',api,{'action':'events'},{},[200])]
 def probe(case):

@@ -32,3 +32,19 @@ This is a targeted functional/security review, not an exhaustive penetration tes
 - `npm run check`
 - `python tests/security-smoke.py` (live read/denial checks, no privileged credentials)
 - `tests/capacity-200.sql` (transaction rolls back)
+
+## Tournament workspaces — 2026-10-10
+
+- Additive summary RPC and authenticated API actions; no table/record migration or deletion.
+- Tournaments open Overview, Players, Categories, Registrations, Payments, Photos and Reports. Existing global screens remain available. Saves return to the event workspace.
+- Existing frame geometry, sidebar widths, content maximum width, card grids, breakpoints and table scrolling retained. Only scoped workspace navigation styles added; four metric cards remain in place while loading.
+- Per-event searches, pagination and exports; wrong-event receipt/review/entry actions rejected when workspace context is supplied. Late responses cannot replace the active event or editor.
+- Counts distinguish entries from player places (teams count as two; repeat participants across categories count per entry). Collections exclude recorded refunds. Expired unpaid reservations do not occupy slots.
+- Cancelled events remain readable; editor refuses to reopen them accidentally through a default status selection.
+- `npm test`: 22 passing, including DOM navigation/race/retry tests and workspace mutation-boundary tests. `npm run check`: passed.
+- `tests/tournament-workspace.sql`: passed against Supabase in a rolled-back transaction, with 202 entries in event A and a distinct event B, mixed individual/team entries, payments, refunds, expiration, pagination and authorization checks. This is not a concurrent browser load test.
+- Before/after fingerprints of all existing tournament, category, registration and payment rows matched exactly (1 tournament, 2 categories, 1 registration, 1 payment).
+- Supabase migration `20261010064719_tournament_workspace_summary` applied; edge function v8 deployed. The prior frontend remains compatible.
+- Netlify frontend deployment and visual desktop/mobile acceptance remain pending: the available cloud browser is signed out of Netlify. DOM tests do not prove pixel-level layout or responsive rendering.
+- Existing Auth advisor warning remains: leaked-password protection is disabled. Email sender credentials still require separate configuration; this change does not send test messages or enable delivery.
+- Live read-only security smoke: all 22 checks passed, including both new endpoints rejecting unauthenticated access. Summary RPC also succeeded under `service_role` (not only the SQL editor owner).
