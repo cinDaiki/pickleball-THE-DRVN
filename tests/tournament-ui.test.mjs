@@ -12,6 +12,7 @@ const summary={registrations:1,confirmed:1,confirmed_players:2,waitlisted:0,avai
 const tick=()=>new Promise(resolve=>setImmediate(resolve));
 function harness(override){
  const dom=new JSDOM(fs.readFileSync(new URL('../public/admin/index.html',import.meta.url),'utf8'));
+ dom.window.HTMLDialogElement.prototype.showModal=function(){this.open=true;};dom.window.HTMLDialogElement.prototype.close=function(){this.open=false;};
  const document=dom.window.document,calls=[];
  const api=async(action,body={})=>{calls.push({action,body});if(override){const out=override(action,body);if(out!==undefined)return out;}if(action==='workspace')return {organizer:'test@example.test',summary:{registrations:2,pending:0,collections:20000,upcoming:2},tournaments,categories:[],settings:[]};if(action==='tournament_summary')return summary;if(action==='admin_list')return {total:1,rows:[{id:'registration',player_name:body.event===ids[0]?'Alice':'Bob',email:'test@example.test',partner_name:'Partner',tournament_title:body.event===ids[0]?'Event 1':'Event 2',category_name:'Doubles',unit:'team',status:'confirmed',payment_status:'verified',amount_due:10000}]};return {};};
  const context=vm.createContext({document,$:s=>document.querySelector(s),e:escape,peso,date,label,api,workspaceTabs,categoryRows,workspaceMetrics,message:()=>{},busy:()=>{},crypto:globalThis.crypto,URL,Blob,setTimeout,console,prompt:()=>null});
@@ -44,4 +45,8 @@ test('failed summary can retry without exposing another event data',async()=>{
  let fail=true;const h=harness(action=>action==='tournament_summary'&&fail?Promise.reject(Error('Offline')):undefined);
  try{await h.run('load()');h.run(`openTournament('${ids[0]}')`);await tick();assert.match(h.document.querySelector('#tournament-content').textContent,/Unable to load/);assert.equal(h.document.querySelectorAll('#stats .stat').length,4);assert.match(h.document.querySelector('#stats').textContent,/—/);fail=false;h.document.querySelector('#retry-workspace').click();await tick();assert.match(h.document.querySelector('#tournament-content').textContent,/Tournament overview/);
  }finally{h.close();}
+});
+
+test('public removal confirms the selected event without cancelling or deleting records',async()=>{
+ const h=harness();try{await h.run('load()');h.run(`openTournament('${ids[0]}')`);await tick();h.document.querySelector('[data-visibility]').click();assert.match(h.document.querySelector('#review-dialog').textContent,/No records will be deleted/);h.document.querySelector('#confirm-visibility').click();await tick();assert.ok(h.calls.some(c=>c.action==='set_visibility'&&c.body.id===ids[0]&&c.body.visible===false));assert.ok(!h.calls.some(c=>['cancel_event','save_event','entry_action'].includes(c.action)));}finally{h.close();}
 });

@@ -57,3 +57,13 @@ This is a targeted functional/security review, not an exhaustive penetration tes
 - Frontend-only change. No database, registration, payment, category, or API changes.
 - Syntax checks and all 22 existing regression tests passed.
 - Netlify production deployment confirmed published at 15:05 Asia/Manila. Authenticated visual acceptance remains pending: secure sign-in was attempted but the site rejected the credentials.
+
+## Public tournament visibility — 2026-10-11
+
+- Separate public_visible flag defaults to true, preserving existing listings and lifecycle status.
+- Admin confirmation dialog hides/restores public listings without deleting categories, registrations, payments, photos, or private status links.
+- New registration attempts for hidden events are rejected; existing payment workflows remain unchanged.
+- Server-only visibility RPC checks organizer membership and logs changes transactionally.
+- 23 Node tests pass. Rollback-only database test verifies hide/restore, new-registration denial, unauthorized denial, unchanged player/payment summary with 202 event entries.
+- Schema migration applied and API v9 deployed. Frontend delivery is a ZIP because Netlify is currently signed out in Cloud Browser.
+- No existing tournament or related data deleted or hidden. Awaiting clarification about permanent removal of “test title” and its related records.

@@ -34,5 +34,16 @@ begin
  begin perform public.drvn_tournament_summary(gen_random_uuid(),a);raise exception 'Unauthorized summary allowed';exception when others then if sqlerrm='Unauthorized summary allowed' then raise;end if;end;
  begin perform public.drvn_tournament_summary(actor,gen_random_uuid());raise exception 'Missing event accepted';exception when others then if sqlerrm='Missing event accepted' then raise;end if;end;
  if has_function_privilege('anon','public.drvn_tournament_summary(uuid,uuid)','EXECUTE') or has_function_privilege('authenticated','public.drvn_tournament_summary(uuid,uuid)','EXECUTE') then raise exception 'Summary exposed to client';end if;
+ -- Visibility must never cancel entries or alter payment history.
+ summary:=public.drvn_tournament_summary(actor,a);
+ perform public.drvn_set_visibility(actor,a,false);
+ if exists(select 1 from jsonb_array_elements(public.drvn_public_events()) t where t->>'id'=a::text) then raise exception 'Hidden event still public';end if;
+ if (select status from public.drvn_tournaments where id=a)<>'published' then raise exception 'Visibility changed lifecycle';end if;
+ if summary<>public.drvn_tournament_summary(actor,a) then raise exception 'Visibility changed player/payment data';end if;
+ begin perform public.drvn_register(ca,'New hidden player','hidden@example.test','','hidden-'||gen_random_uuid(),gen_random_uuid(),false);raise exception 'Hidden event accepted a new entry';exception when others then if sqlerrm<>'Registration is closed' then raise;end if;end;
+ perform public.drvn_set_visibility(actor,a,true);
+ if not exists(select 1 from jsonb_array_elements(public.drvn_public_events()) t where t->>'id'=a::text) then raise exception 'Restored event missing';end if;
+ begin perform public.drvn_set_visibility(gen_random_uuid(),a,false);raise exception 'Unauthorized visibility accepted';exception when others then if sqlerrm<>'Admin required' then raise;end if;end;
+ if has_function_privilege('anon','public.drvn_set_visibility(uuid,uuid,boolean)','EXECUTE') or has_function_privilege('authenticated','public.drvn_set_visibility(uuid,uuid,boolean)','EXECUTE') then raise exception 'Visibility RPC exposed';end if;
 end $$;
 rollback;
