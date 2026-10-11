@@ -67,3 +67,11 @@ This is a targeted functional/security review, not an exhaustive penetration tes
 - 23 Node tests pass. Rollback-only database test verifies hide/restore, new-registration denial, unauthorized denial, unchanged player/payment summary with 202 event entries.
 - Schema migration applied and API v9 deployed. Frontend delivery is a ZIP because Netlify is currently signed out in Cloud Browser.
 - No existing tournament or related data deleted or hidden. Awaiting clarification about permanent removal of “test title” and its related records.
+
+## Domain rename — 2026-10-11
+- Confirmed live `thedrvn.netlify.app` initially failed calendar requests: API returned 400 Origin not allowed and old-domain CORS headers.
+- API v10 migrates absent or retired SITE_URL to the new canonical origin; email status links use the same resolved URL. Custom SITE_URL remains supported. Old origin is no longer trusted.
+- 24 local tests and syntax checks passed; 25 non-destructive live access probes passed, including new-origin calendar and retired/foreign-origin rejection.
+- Browser verified calendar recovery and admin sign-in page. Authenticated admin actions and email delivery were not exercised.
+- Live admin.css and login.html match repository. Live admin.js is still the previous deployment, without the public visibility controls. Upload the previously supplied DRVN-Public-Visibility.zip to deploy those controls.
+- No tournament or player/payment records were changed.

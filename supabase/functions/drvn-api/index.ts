@@ -1,9 +1,10 @@
+import {siteUrl} from './site.mjs';
 import {assertTournamentScope} from './workspace.mjs';
 import {emailConfig,deliverEmail} from './email.mjs';
 import {validateEvent,listOptions,money,required,uuid,reference,imageType,csv,effectiveStatus,hash,tokenFor,occupiedStatuses} from './core.mjs';
 const env=(k:string)=>Deno.env.get(k)||'';
 const base=env('SUPABASE_URL'),key=env('SUPABASE_SERVICE_ROLE_KEY');
-const site=env('SITE_URL')||'https://shainetesting.netlify.app';
+const site=siteUrl(env('SITE_URL'));
 const headers={apikey:key,Authorization:`Bearer ${key}`,'Content-Type':'application/json'};
 async function db(path:string,method='GET',body?:unknown){if(method==='GET'&&!path.includes('limit=')){let all:any[]=[];for(let offset=0;;offset+=500){const rows=await db(path+(path.includes('?')?'&':'?')+`limit=500&offset=${offset}`);all=all.concat(rows);if(rows.length<500)return all;}}const r=await fetch(`${base}/rest/v1/${path}`,{method,headers:{...headers,Prefer:'return=representation'},body:body===undefined?undefined:JSON.stringify(body)});const data=await r.json().catch(()=>null);if(!r.ok){if(data?.code==='23505')throw Error('This entry or verified payment reference already exists');throw Error(data?.message||'Database request failed');}return data;}
 const rpc=(name:string,body={})=>db(`rpc/drvn_${name}`,'POST',body);
